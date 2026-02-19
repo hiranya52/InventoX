@@ -11,9 +11,128 @@
 </head>
 <body>
 
-    <h1>InventoX</h1>
+    <!-- Navbar -->
+    <nav class="navy-gradient px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-2xl">
+        <div class="flex items-center space-x-3">
+            <div class="bg-purple-500 p-2 rounded-xl ml-8">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+            <span class="text-white font-bold text-2xl tracking-tight">Invento<span class="text-purple-400">X</span></span>
+        </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <div class="flex items-center gap-6">
+            <button data-modal-target="product-modal" data-modal-toggle="product-modal" class="btn-interactive text-white px-6 py-2.5 rounded-full font-semibold shadow-lg purple-glow flex items-center gap-2 mr-8">
+                <span>+</span> Add Product
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4" data-aos="fade-down">
+            <div>
+                <h1 class="text-4xl font-extrabold text-navy-900 tracking-tight">Our Collection</h1>
+                <p class="text-gray-500 mt-1">Manage your inventory and stock levels in real-time.</p>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div id="loading" class="loading">Loading...</div>
+        </div>
+    </main>
+
+    <!-- Add Product Modal -->
+    <div id="product-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b navy-gradient">
+                    <h3 class="text-lg font-bold text-white">Add New Product</h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="product-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="add-product-form" class="p-4 md:p-5">
+                    <div class="grid gap-4 mb-4 grid-cols-2">
+                        <div class="col-span-2">
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Product Name</label>
+                            <input type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Type product name" required>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Price</label>
+                            <input type="number" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="$299" required>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <label for="category" class="block mb-2 text-sm font-medium text-gray-900">Category</label>
+                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                                <option value="">Select category</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Beauty">Beauty</option>
+                                <option value="Fragrance">Fragrance</option>
+                            </select>
+                        </div>
+                        <div class="col-span-2">
+                            <label for="image-url" class="block mb-2 text-sm font-medium text-gray-900">Image URL</label>
+                            <input type="url" id="image-url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="https://example.com/image.jpg" required>
+                        </div>
+                    </div> 
+                    <button type="submit" class="text-white inline-flex items-center font-medium rounded-lg text-sm px-5 py-2.5 w-full justify-center bg-purple-600 hover:bg-purple-700 transition">
+                        Confirm & Add Product
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="edit-product-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b bg-emerald-900">
+                    <h3 class="text-lg font-bold text-white">Edit Product</h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="edit-product-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="edit-product-form" class="p-4 md:p-5">
+                    <input type="hidden" id="edit-id">
+                    <div class="grid gap-4 mb-4 grid-cols-2">
+                        <div class="col-span-2">
+                            <label for="edit-name" class="block mb-2 text-sm font-medium text-gray-900">Product Name</label>
+                            <input type="text" id="edit-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                        </div>
+                        <div class="col-span-2">
+                            <label for="edit-price" class="block mb-2 text-sm font-medium text-gray-900">Price</label>
+                            <input type="number" id="edit-price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                        </div>
+                    </div> 
+                    <div class="flex gap-3">
+                        <button type="submit" class="flex-1 text-white bg-emerald-800 hover:bg-emerald-900 font-medium rounded-lg text-sm px-5 py-2.5 transition">
+                            Save
+                        </button>
+                        <button type="button" data-modal-toggle="edit-product-modal" class="flex-1 text-gray-900 bg-gray-100 hover:bg-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 transition">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({duration: 1000,once: true});
+    </script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>
